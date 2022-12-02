@@ -127,7 +127,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="cartype.cpp" />
     <ClCompile Include="ProjectHashCar.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="cartype.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
