@@ -6,7 +6,7 @@
 
 #include <string>
 using namespace std;
-const int MAX_ITEMS = 11;
+const int MAX_ITEMS = 20;
 
 template <class ItemType>
 class HashType
@@ -21,8 +21,14 @@ public:
 	bool IsFull() const;
 	int GetNumItems() const;
 	void RetrieveItem(ItemType&, bool&);
+
+	// --------------------------------------
+	// Replace these with a single, alternate Hashing method
+	// Actual implementation will depend on whether ID is a string, or int.
 	void InsertItemLinear(ItemType);
 	void InsertItemQuadratic(ItemType);
+	// --------------------------------------
+	
 	void DeleteItem(ItemType);
 	int Hash(string) const;
 	unsigned long int GetCollisions() const;

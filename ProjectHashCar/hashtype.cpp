@@ -91,6 +91,9 @@ unsigned long int HashType<ItemType>::GetCollisions() const {
 	return numCollisions;
 }
 
+// Replace these with a single, alternate Hashing method
+// Actual implementation will depend on whether ID is a string, or int.
+// ------------------------------------------------------------------------
 template <class ItemType>
 void HashType<ItemType>::InsertItemLinear(ItemType item)
 // Post: item is stored in the array at position item.Hash()
@@ -125,6 +128,7 @@ void HashType<ItemType>::InsertItemQuadratic(ItemType item)
 	info[location] = item;
 	numItems++;
 }
+// ------------------------------------------------------------------------
 
 template <class ItemType>
 void HashType<ItemType>::RetrieveItem(ItemType& item, bool& found)

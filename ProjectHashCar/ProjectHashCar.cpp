@@ -1,15 +1,27 @@
 // ProjectHashCar.cpp : This file contains the 'main' function. Program execution begins and ends there.
 
-#include <iostream>
-
+#include <iostream>     // cout
+#include <stdlib.h>		// srand
+#include <time.h>		// time
 #include "hashtype.h"
 #include "cartype.h"
 
+typedef CarType ItemType;
 using namespace std;
 
 int main()
 {
-    return 0;
+	srand(time(NULL));
+	CarType cars[MAX_ITEMS];		// Randomly initialize 20 cars to be processed
+	cout << "We have 20 cars: " << endl;
+	
+	// Instead of randomly setting values in this for loop, I instead had the CarType
+	// constructor randomly initialize values when generated.
+	for (int i = 0; i < MAX_ITEMS; i++) {
+		cout << cars[i] << endl;
+	}
+
+	return 0;
 }
 
 
