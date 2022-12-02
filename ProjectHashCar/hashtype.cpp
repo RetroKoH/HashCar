@@ -3,44 +3,27 @@
 #include "hashtype.h"
 #include <iostream>
 
-template <class ItemType>
-HashType<ItemType>::HashType()
+HashType::HashType()
 {
 	numCollisions = 0;
 	numItems = 0;
 	size = MAX_ITEMS;
-	a = 33;				// The former constant file will be the default
-	info = new ItemType[size];
+	info = new int[size];
 	for (int i = 0; i < size; i++)
-		info[i] = emptyItem;
+		info[i] = -1;
 }
 
-template <class ItemType>
-HashType<ItemType>::HashType(int s, int factor) {
-	numItems = 0;
-	numCollisions = 0;
-	size = s;
-	a = factor;
-	info = new ItemType[size];
-	for (int i = 0; i < size; i++) {
-		info[i] = emptyItem;
-	}
-}
-
-template <class ItemType>
-bool HashType<ItemType>::IsFull() const
+bool HashType::IsFull() const
 {
 	return (numItems == size);
 }
 
-template <class ItemType>
-int HashType<ItemType>::GetNumItems() const
+int HashType::GetNumItems() const
 {
 	return numItems;
 }
 
-template <class ItemType>
-void HashType<ItemType>::MakeEmpty()
+void HashType::MakeEmpty()
 // Post: list is empty.
 {
 	numItems = 0;
@@ -49,8 +32,7 @@ void HashType<ItemType>::MakeEmpty()
 }
 
 //Updated IT via Dale 1/31/2019
-template <class ItemType>
-void HashType<ItemType>::DeleteItem(ItemType item)
+void HashType::DeleteItem(int item)
 {
 	int location = 0;
 	int startLoc;
@@ -73,36 +55,25 @@ void HashType<ItemType>::DeleteItem(ItemType item)
 	}
 }
 
-template <class ItemType>
-int HashType<ItemType>::Hash(string item) const
+int HashType::Hash(int item) const
 // Post: Returns an integer between 0 and hash table size.
 {
-	int hash = 0;
-	int n = item.length();
-	for (int i = 0; i < n; i++)
-		hash = a * hash + item[i];
-
-	// prevent overflow negative values as an index.
-	return abs(hash % size);
+	return abs((item % size));
 }
 
-template <class ItemType>
-unsigned long int HashType<ItemType>::GetCollisions() const {
+unsigned long int HashType::GetCollisions() const {
 	return numCollisions;
 }
 
-// Replace these with a single, alternate Hashing method
 // Actual implementation will depend on whether ID is a string, or int.
-// ------------------------------------------------------------------------
-template <class ItemType>
-void HashType<ItemType>::InsertItemLinear(ItemType item)
+void HashType::InsertItem(int item)
 // Post: item is stored in the array at position item.Hash()
 //       or the next free spot.
 {
 	int location = Hash(item);
 
 	while (info[location] != emptyItem) {
-		location = (location + 1) % size;	// linear probing
+		location = (location + 1) % size;	// linear probing (Change method)
 		numCollisions++;
 	}
 
@@ -110,28 +81,7 @@ void HashType<ItemType>::InsertItemLinear(ItemType item)
 	numItems++;
 }
 
-template <class ItemType>
-void HashType<ItemType>::InsertItemQuadratic(ItemType item)
-// Post: item is stored in the array at position item.Hash()
-//       or the next free spot.
-{
-	int hashVal = Hash(item);
-	int location = hashVal;
-	int i = 1;
-
-	while (info[location] != emptyItem) {
-		location = (hashVal + i * i) % size;   // quadratic probing
-		numCollisions++;
-		i++;
-	}
-
-	info[location] = item;
-	numItems++;
-}
-// ------------------------------------------------------------------------
-
-template <class ItemType>
-void HashType<ItemType>::RetrieveItem(ItemType& item, bool& found)
+void HashType::RetrieveItem(int item, bool& found)
 {
 	int location;
 	int startLoc;
@@ -151,8 +101,7 @@ void HashType<ItemType>::RetrieveItem(ItemType& item, bool& found)
 		item = info[location];
 }
 
-template <class ItemType>
-ostream& operator<<(ostream& out, const HashType<ItemType>& items) {
+ostream& operator<<(ostream& out, const HashType& items) {
 	out << "[ ";
 	for (int i = 0; i < items.size; i++) {
 		if (i == 0)

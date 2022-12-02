@@ -36,6 +36,7 @@ public:
 	string GetMake();
 	string GetModel();
 	ColorType GetColor();
+	int GetID();
 	void SetYear(int inputYear);
 	void SetMileage(int inputMileage);
 	void SetMake(string inputMake);

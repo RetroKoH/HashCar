@@ -8,39 +8,30 @@
 using namespace std;
 const int MAX_ITEMS = 20;
 
-template <class ItemType>
 class HashType
 {
 public:
-	// Constructors
+	// Constructor
 	HashType();
-	HashType(int, int);
-
+	
 	// Member Functions
 	void MakeEmpty();
 	bool IsFull() const;
 	int GetNumItems() const;
-	void RetrieveItem(ItemType&, bool&);
-
-	// --------------------------------------
-	// Replace these with a single, alternate Hashing method
-	// Actual implementation will depend on whether ID is a string, or int.
-	void InsertItemLinear(ItemType);
-	void InsertItemQuadratic(ItemType);
-	// --------------------------------------
-	
-	void DeleteItem(ItemType);
-	int Hash(string) const;
+	void RetrieveItem(int, bool&);
+	void InsertItem(int);
+	void DeleteItem(int);
+	int Hash(int) const;
 	unsigned long int GetCollisions() const;
 	// Overloaded Operator
-	friend ostream& operator<<(ostream&, const HashType<ItemType>&);
+	friend ostream& operator<<(ostream&, const HashType&);
 
 private:
-	int a; // the value used for a polynomial hash function
+//	int a; // the value used for a polynomial hash function (Only used if we utilize strings for ID
 	int numItems;
 	int size;
-	ItemType* info;
-	ItemType emptyItem = ""; // The empty string
+	int* info;
+	int emptyItem = -1; // The empty value
 	unsigned long int numCollisions;
 };
 #endif

@@ -15,23 +15,19 @@ int main()
 	CarType cars[MAX_ITEMS];		// Randomly initialize 20 cars to be processed
 	cout << "We have 20 cars: " << endl;
 	
+	HashType myHashTable;
+	
 	// Instead of randomly setting values in this for loop, I instead had the CarType
 	// constructor randomly initialize values when generated.
 	for (int i = 0; i < MAX_ITEMS; i++) {
 		cout << cars[i] << endl;
+		myHashTable.InsertItem(cars[i].GetID());
 	}
 
+	// For now, we are only hasing integers. We are not yet hasing the actual objects
+	cout << myHashTable << "# of collisions: " << myHashTable.GetCollisions() << endl;
 	return 0;
 }
-
-
-
-
-
-
-
-
-
 
 
 // In case you are using Visual Studio: (Otherwise, ignore this)

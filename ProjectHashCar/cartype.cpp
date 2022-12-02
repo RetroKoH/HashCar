@@ -42,12 +42,20 @@ int CarType::GetMileage(){
 	return mileage;
 }
 
+string CarType::GetMake() {
+	return make;
+}
+
 string CarType::GetModel(){
 	return model;
 }
 
-string CarType::GetMake(){
-	return make;
+ColorType CarType::GetColor() {
+	return color;
+}
+
+int CarType::GetID() {
+	return ID;
 }
 
 void CarType::SetYear(int inputYear){
@@ -58,12 +66,16 @@ void CarType::SetMileage(int inputMileage){
 	mileage = inputMileage;
 }
 
+void CarType::SetMake(string inputMake) {
+	make = inputMake;
+}
+
 void CarType::SetModel(string inputModel){
 	model = inputModel;
 }
 
-void CarType::SetMake(string inputMake){
-	make = inputMake;
+void CarType::SetColor(ColorType colInput) {
+	color = colInput;
 }
 
 void CarType::SetID(int idInput){
@@ -71,6 +83,7 @@ void CarType::SetID(int idInput){
 }
 
 ostream& operator<<(ostream& out, const CarType car){
+	out << "#" << car.ID << endl;
 	out << "Car: " << car.make << " " << car.model << endl;
 	out << "Car year: " << car.year << endl;
 	out << "Car color: " << colors[car.color] << endl;
