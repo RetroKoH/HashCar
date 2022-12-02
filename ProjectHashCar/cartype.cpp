@@ -1,6 +1,7 @@
 // Implementation file for car.h
 
 #include "cartype.h"
+#include <iostream>
 #include <algorithm>
 
 CarType::CarType(){

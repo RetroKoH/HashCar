@@ -18,6 +18,7 @@ public:
 	void SetMake(string inputMake);
 	void SetID(int idInput);
 	friend ostream& operator<<(ostream& out, const CarType car);
+
 private:
 	int year;
 	int mileage;
