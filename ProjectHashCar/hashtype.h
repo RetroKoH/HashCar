@@ -7,7 +7,7 @@
 #include <iostream>
 #include <string>
 using namespace std;
-const int MAX_ITEMS = 20;
+const int MAX_ITEMS = 23;
 
 class HashType
 {
@@ -22,7 +22,7 @@ public:
 	void RetrieveItem(CarType&, bool&);			// Changed to object
 	void InsertItem(CarType);					// Changed to object
 	void DeleteItem(CarType);					// Changed to object
-	int Hash(int) const;						// Hash CarType using ID (Currently int)
+	int Hash(int, bool) const;					// Hash CarType using ID (Currently int)
 	unsigned long int GetCollisions() const;
 	// Overloaded Operator
 	friend ostream& operator<<(ostream&, const HashType&);
@@ -68,7 +68,7 @@ void HashType::MakeEmpty()
 void HashType::DeleteItem(CarType item)
 {
 	int location = 0;
-	int startLoc = Hash(item.GetID());
+	int startLoc = Hash(item.GetID(), false);
 	location = startLoc;
 
 	do
@@ -87,38 +87,59 @@ void HashType::DeleteItem(CarType item)
 	}
 }
 
-int HashType::Hash(int item) const
+// Updated to employ double hashing
+int HashType::Hash(int item, bool second) const
 // Post: Returns an integer between 0 and hash table size.
 {
-	return abs(item % size);
+	if (!second)
+		return abs(item % size);
+	else {
+		return abs(13 - (item % 13));
+	}
 }
 
 unsigned long int HashType::GetCollisions() const {
 	return numCollisions;
 }
 
-// Updated to work with objects
+// Updated to work with objects; Uses double-hashing
 // Actual implementation will depend on whether ID is a string, or int.
 void HashType::InsertItem(CarType item)
 // Post: item is stored in the array at position item.Hash()
 //       or the next free spot.
 {
-	int location = Hash(item.GetID());
+	/*int location = Hash(item.GetID(), false);
 
 	while (!(info[location] == -1)) {
-		location = (location + 1) % size;	// linear probing (Change method)
+		location = (location + 1) % size;	// linear probing
 		numCollisions++;
+	}
+
+	info[location] = item;
+	numItems++;
+	cout << "Car #" << numItems << " added w/ " << numCollisions << "Collisions" << endl;*/
+
+	int hVal1 = Hash(item.GetID(), false), hVal2 = Hash(item.GetID(), true);
+	int location = hVal1;
+	int i = 1;
+	cout << "Hashvals: " << hVal1 << " | " << hVal2 << "." << endl;
+
+	while (!(info[location] == -1)) {
+		location = (hVal1 + i * hVal2) % size;	// double hashing
+		numCollisions++;
+		i++;
 	}
 
 	info[location] = item;					// Ensure that object assignment works correctly.
 	numItems++;
+	cout << "Car #" << numItems << " added w/ " << numCollisions << "Collisions" << endl;
 }
 
 // Updated to work with objects
 void HashType::RetrieveItem(CarType& item, bool& found)
 {
 	bool moreToSearch = true;
-	int startLoc = Hash(item.GetID());
+	int startLoc = Hash(item.GetID(), false);
 	int location = startLoc;
 
 	do
@@ -135,13 +156,22 @@ void HashType::RetrieveItem(CarType& item, bool& found)
 		item = info[location];					// Ensure that object assignment works correctly.
 }
 
+// Modified to display empty slots in the hash table appropriately
 ostream& operator<<(ostream& out, const HashType& items) {
 	out << "[ ";
 	for (int i = 0; i < items.size; i++) {
-		if (i == 0)
-			out << items.info[i];
-		else
-			out << "-----\n" << items.info[i];
+		if (items.info[i] == -1) {
+			if (i == 0)
+				out << "EMPTY SLOT\n";
+			else
+				out << "-----\n" << "EMPTY SLOT\n";
+		}
+		else {
+			if (i == 0)
+				out << items.info[i];
+			else
+				out << "-----\n" << items.info[i];
+		}
 	}
 	out << " ]" << endl;
 	return out;

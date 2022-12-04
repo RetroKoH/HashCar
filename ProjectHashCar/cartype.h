@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <stdlib.h>		// rand
 using namespace std;
+const int MAX_CARS = 20;
 
 // Colors
 enum ColorType { WHITE, BLACK, GRAY, RED, GREEN, BLUE, GOLD, SILVER, BROWN };

@@ -16,13 +16,13 @@ void randInitCar(CarType&);
 int main()
 {
 	srand(time(NULL));
-	CarType cars[MAX_ITEMS];				// Initialize 20 cars to be processed
+	CarType cars[MAX_CARS];				// Initialize 20 cars to be processed
 	cout << "We have 20 cars: " << endl;
 	HashType myHashTable;					// Init hash table
 	
 	// Instead of randomly setting values in this for loop, I instead had the CarType
 	// constructor randomly initialize values when generated.
-	for (int i = 0; i < MAX_ITEMS; i++) {
+	for (int i = 0; i < MAX_CARS; i++) {
 		randInitCar(cars[i]);				// Randomize car
 		//cout << cars[i] << endl;			// Print attributes
 		myHashTable.InsertItem(cars[i]);	// Insert into Hash Table (based on ID)
