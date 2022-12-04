@@ -3,30 +3,54 @@
 #include <iostream>     // cout
 #include <stdlib.h>		// srand
 #include <time.h>		// time
-#include "hashtype.h"
 #include "cartype.h"
+#include "hashtype.h"
 
 typedef CarType ItemType;
 using namespace std;
 
+// We need to use this function to randomize the car, as the default
+// constructor needs to be used for the "empty" spaces in the hash table.
+void randInitCar(CarType&);
+
 int main()
 {
 	srand(time(NULL));
-	CarType cars[MAX_ITEMS];		// Randomly initialize 20 cars to be processed
+	CarType cars[MAX_ITEMS];				// Initialize 20 cars to be processed
 	cout << "We have 20 cars: " << endl;
-	
-	HashType myHashTable;
+	HashType myHashTable;					// Init hash table
 	
 	// Instead of randomly setting values in this for loop, I instead had the CarType
 	// constructor randomly initialize values when generated.
 	for (int i = 0; i < MAX_ITEMS; i++) {
-		cout << cars[i] << endl;
-		myHashTable.InsertItem(cars[i].GetID());
+		randInitCar(cars[i]);				// Randomize car
+		//cout << cars[i] << endl;			// Print attributes
+		myHashTable.InsertItem(cars[i]);	// Insert into Hash Table (based on ID)
 	}
 
 	// For now, we are only hasing integers. We are not yet hasing the actual objects
 	cout << myHashTable << "# of collisions: " << myHashTable.GetCollisions() << endl;
 	return 0;
+}
+
+void randInitCar(CarType& car) {
+	int year = 1990 + (rand() % 32);
+	car.SetYear(year);							// Year is random from 1990 to 2022
+
+	int age = 2022 - year;
+	int miles = 0;								// Randomly generated; 10-12k miles per year
+	for (int i = 0; i < age; i++)
+		miles += 10000 + (rand() % 2000);
+	car.SetMileage(miles);
+
+	// Use enum/int to pull the correct string.
+	MakeType getMake = MakeType(rand() % 6);
+	car.SetMake(makes[getMake]);				// Get random make.
+	car.SetModel(models[getMake][rand() % 5]);	// Then pull a model name based on make.
+	car.SetColor(ColorType(rand() % 9));		// Assign a random color
+
+	car.SetID(rand() % 999999);					// Assign a random 6 digit ID number
+	// ID will later be its own IDType class, consisting of either an int, or string.
 }
 
 

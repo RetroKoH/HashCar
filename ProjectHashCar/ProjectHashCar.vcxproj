@@ -127,8 +127,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="cartype.cpp" />
-    <ClCompile Include="hashtype.cpp" />
     <ClCompile Include="ProjectHashCar.cpp" />
   </ItemGroup>
   <ItemGroup>

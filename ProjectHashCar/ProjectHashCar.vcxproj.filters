@@ -18,12 +18,6 @@
     <ClCompile Include="ProjectHashCar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cartype.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="hashtype.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cartype.h">
