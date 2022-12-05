@@ -3,6 +3,7 @@
 #include <iostream>     // cout
 #include <stdlib.h>		// srand
 #include <time.h>		// time
+#include <chrono>
 #include "cartype.h"
 #include "hashtype.h"
 
@@ -15,21 +16,27 @@ void randInitCar(CarType&);
 
 int main()
 {
-	//srand(time(NULL));				// Comment this out to utilize the same seed
-	CarType cars[MAX_CARS];				// Initialize 20 cars to be processed
+	//srand(time(NULL));							// Comment this out to utilize the same seed
+
+	chrono::time_point<chrono::system_clock> start;
+	chrono::time_point<chrono::system_clock> end;
+
+	CarType cars[MAX_CARS];							// Initialize 20 cars to be processed
 	cout << "We have " << MAX_CARS << " cars: " << endl;
-	HashType myHashTable;				// Init hash table
+	HashType myHashTable;							// Init hash table
 	
-	// Instead of randomly setting values in this for loop, I instead had the CarType
-	// constructor randomly initialize values when generated.
+	start = chrono::system_clock::now();			// Record start time
+	// Randomly generate cars and hash them.
 	for (int i = 0; i < MAX_CARS; i++) {
 		randInitCar(cars[i]);				// Randomize car
 		//cout << cars[i] << endl;			// Print attributes
 		myHashTable.InsertItem(cars[i]);	// Insert into Hash Table (based on ID)
 	}
+	end = chrono::system_clock::now();				// Record end time
+	chrono::duration<float> elapsed = end - start;	// Calculate and report time
 
-	// For now, we are only hasing integers. We are not yet hasing the actual objects
 	cout << myHashTable << "# of collisions: " << myHashTable.GetCollisions() << endl;
+	cout << "Time elapsed: " << elapsed.count() << " seconds." << endl;
 	return 0;
 }
 
