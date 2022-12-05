@@ -15,10 +15,10 @@ void randInitCar(CarType&);
 
 int main()
 {
-	srand(time(NULL));
+	//srand(time(NULL));				// Comment this out to utilize the same seed
 	CarType cars[MAX_CARS];				// Initialize 20 cars to be processed
-	cout << "We have 20 cars: " << endl;
-	HashType myHashTable;					// Init hash table
+	cout << "We have " << MAX_CARS << " cars: " << endl;
+	HashType myHashTable;				// Init hash table
 	
 	// Instead of randomly setting values in this for loop, I instead had the CarType
 	// constructor randomly initialize values when generated.

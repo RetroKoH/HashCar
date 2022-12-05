@@ -1,3 +1,2 @@
 ﻿  ProjectHashCar.cpp
-D:\HashCar\ProjectHashCar\ProjectHashCar.cpp(18,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   ProjectHashCar.vcxproj -> D:\HashCar\ProjectHashCar\x64\Debug\ProjectHashCar.exe

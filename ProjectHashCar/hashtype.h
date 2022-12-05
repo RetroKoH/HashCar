@@ -1,8 +1,11 @@
 #ifndef HASHTYPE_H
 #define HASHTYPE_H
 
+// Based on Integer HashType class by:
 // Author: Ivan Temesvari
 // Date 4/10/2019
+// Modified/Reworked by: Christopher Gaudet
+// Date 12/3/2022
 
 #include <iostream>
 #include <string>
@@ -28,7 +31,6 @@ public:
 	friend ostream& operator<<(ostream&, const HashType&);
 
 private:
-	int a; // the value used for a polynomial hash function (Only used if we utilize strings for ID)
 	int numItems;
 	int size;
 	CarType* info;
@@ -69,6 +71,7 @@ void HashType::DeleteItem(CarType item)
 {
 	int location = 0;
 	int startLoc = Hash(item.GetID(), false);
+	int offset = Hash(item.GetID(), true);
 	location = startLoc;
 
 	do
@@ -79,7 +82,7 @@ void HashType::DeleteItem(CarType item)
 			return;
 		}
 		else
-			location = (location + 1) % size;
+			location = (location + offset) % size;	// Double hashing
 	} while (location != startLoc);
 
 	if (location == startLoc) {
@@ -130,7 +133,7 @@ void HashType::InsertItem(CarType item)
 		i++;
 	}
 
-	info[location] = item;					// Ensure that object assignment works correctly.
+	info[location] = item;
 	numItems++;
 	cout << "Car #" << numItems << " added w/ " << numCollisions << "Collisions" << endl;
 }
@@ -140,6 +143,7 @@ void HashType::RetrieveItem(CarType& item, bool& found)
 {
 	bool moreToSearch = true;
 	int startLoc = Hash(item.GetID(), false);
+	int offset = Hash(item.GetID(), true);
 	int location = startLoc;
 
 	do
@@ -147,13 +151,13 @@ void HashType::RetrieveItem(CarType& item, bool& found)
 		if (info[location] == item || info[location] == -1)
 			moreToSearch = false;
 		else
-			location = (location + 1) % size;
+			location = (location + offset) % size;		// Double Hashing
 	} while (location != startLoc && moreToSearch);
 
 	found = (info[location] == item);
 
 	if (found)
-		item = info[location];					// Ensure that object assignment works correctly.
+		item = info[location];
 }
 
 // Modified to display empty slots in the hash table appropriately

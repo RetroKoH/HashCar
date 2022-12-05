@@ -1,6 +1,9 @@
 #ifndef CAR_TYPE
 #define CAR_TYPE
 
+// Author: Benjamin Hoppe
+// Date 12/02/2022
+
 #include <iostream>		// cout
 #include <algorithm>
 #include <stdlib.h>		// rand
