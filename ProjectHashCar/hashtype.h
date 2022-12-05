@@ -22,7 +22,7 @@ public:
 	void MakeEmpty();
 	bool IsFull() const;
 	int GetNumItems() const;
-	void RetrieveItem(CarType&, bool&);			// Changed to object
+	void RetrieveItem(int, CarType&, bool&);	// Changed to object
 	void InsertItem(CarType);					// Changed to object
 	void DeleteItem(CarType);					// Changed to object
 	int Hash(int, bool) const;					// Hash CarType using ID (Currently int)
@@ -63,7 +63,7 @@ void HashType::MakeEmpty()
 	numItems = 0;
 	delete[] info;
 	info = new CarType[size];	// Constructed w/ ID of -1 ("Empty")
-
+	numCollisions = 0;			// Reset collision count
 }
 
 // Updated to work with objects
@@ -139,25 +139,26 @@ void HashType::InsertItem(CarType item)
 }
 
 // Updated to work with objects
-void HashType::RetrieveItem(CarType& item, bool& found)
+void HashType::RetrieveItem(int ID, CarType& item, bool& found)
 {
 	bool moreToSearch = true;
-	int startLoc = Hash(item.GetID(), false);
-	int offset = Hash(item.GetID(), true);
+	int startLoc = Hash(ID, false);
+	int offset = Hash(ID, true);
 	int location = startLoc;
 
+	// Search for the requested ID#
 	do
 	{
-		if (info[location] == item || info[location] == -1)
+		if (info[location] == ID || info[location] == -1)
 			moreToSearch = false;
 		else
 			location = (location + offset) % size;		// Double Hashing
 	} while (location != startLoc && moreToSearch);
 
-	found = (info[location] == item);
+	found = (info[location] == ID);			// Set/Clear found flag accordingly
 
 	if (found)
-		item = info[location];
+		item = info[location];				// Return the CarType if found
 }
 
 // Modified to display empty slots in the hash table appropriately
