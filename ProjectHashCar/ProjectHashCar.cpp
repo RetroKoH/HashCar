@@ -12,10 +12,7 @@ using namespace std;
 
 enum OptionType {ADD, RETRIEVE, DELETE, RESET, QUIT};
 
-// We need to use this function to randomize the car, as the default
-// constructor needs to be used for the "empty" spaces in the hash table.
 void randInitCar(CarType&);
-// Function used to create a new car to add to the Hash table
 void addNewCar(HashType&);
 
 int main()
@@ -33,7 +30,7 @@ int main()
 	// Randomly generate cars and hash them.
 	for (int i = 0; i < MAX_CARS; i++) {
 		randInitCar(cars[i]);				// Randomize car
-		//cout << cars[i] << endl;			// Print attributes
+		//cout << cars[i] << endl;			// Print attributes (Debug text)
 		myHashTable.InsertItem(cars[i]);	// Insert into Hash Table (based on ID)
 	}
 	end = chrono::system_clock::now();				// Record end time
@@ -57,7 +54,7 @@ int main()
 		cin >> option;
 		try {
 			if (cin.fail()) {
-				throw "ERROR - Non-Integer Input";
+				throw "ERROR - Non-Integer Menu Input";
 			}
 		}
 		catch (const char* error) {
@@ -99,21 +96,25 @@ int main()
 			break;
 		case DELETE:
 			{
-				cout << "Give ID of car record to delete: " << endl;
-				cin >> reqID;
-				myHashTable.RetrieveItem(reqID, editCar, foundCar);
-				if (!foundCar)
-					cout << "Car record not found!" << endl;
-				else {
-					char yes = ' ';
-					cout << "'Y' to delete this car:\n" << editCar << endl;
-					cin >> yes;
-					if (yes == 'Y' || yes == 'y') {
-						myHashTable.DeleteItem(editCar);
-						cout << "Car #" << reqID << " has been deleted!" << endl;
+				if (myHashTable.GetNumItems() > 0) {
+					cout << "Give ID of car record to delete: " << endl;
+					cin >> reqID;
+					myHashTable.RetrieveItem(reqID, editCar, foundCar);
+					if (!foundCar)
+						cout << "Car record not found!" << endl;
+					else {
+						char yes = ' ';
+						cout << "'Y' to delete this car:\n" << editCar << endl;
+						cin >> yes;
+						if (yes == 'Y' || yes == 'y') {
+							myHashTable.DeleteItem(editCar);
+							cout << "Car #" << reqID << " has been deleted!" << endl;
+						}
 					}
+					foundCar = false; // Reset flag for next use.
 				}
-				foundCar = false; // Reset flag for next use.
+				else
+					cout << "Cannot delete from an empty table." << endl;
 			}
 			break;
 		case RESET:
@@ -140,7 +141,7 @@ int main()
 			running = false;
 			break;
 		default:
-			cout << "ERROR - Invalid Integer" << endl;
+			cout << "ERROR - Invalid Menu Integer" << endl;
 			break;
 		}
 	}
@@ -148,6 +149,10 @@ int main()
 }
 
 void randInitCar(CarType& car) {
+	// Function: Sets car's members to randomized values.
+	// Pre:	 The object has already been initialized.
+	// Post: The object now has fully randomized member values.
+
 	int year = 1990 + (rand() % 32);
 	car.SetYear(year);							// Year is random from 1990 to 2022
 
@@ -168,16 +173,21 @@ void randInitCar(CarType& car) {
 }
 
 void addNewCar(HashType& table) {
+	// Function: Create a new car and adds it to HashType table.
+	// Pre:	 Given HashType table has been initialized.
+	// Post: Object is created and hashed into the table.
+
 	int year = 0, miles = -1;
 	string color = "", make, model;
-	ColorType newColor;
+	ColorType newColor = BLACK;
 
 	while (year == 0) {
 		cout << "Enter year of car (1960-2022): " << endl;
 		cin >> year;
+
 		try {
 			if (cin.fail()) {
-				throw "ERROR - Non-Integer Input";
+				throw "ERROR - Non-Integer Year Input";
 			}
 		}
 		catch (const char* error) {
@@ -190,6 +200,8 @@ void addNewCar(HashType& table) {
 		if ((1960 > year || year > 2022)) {
 			cout << "Invalid year" << endl;
 			year = 0;
+			cin.clear();
+			cin.ignore();
 		}
 	}
 
@@ -199,7 +211,7 @@ void addNewCar(HashType& table) {
 
 		try {
 			if (cin.fail()) {
-				throw "ERROR - Non-Integer Input";
+				throw "ERROR - Non-Integer mileage Input";
 			}
 		}
 		catch (const char* error) {
@@ -212,6 +224,8 @@ void addNewCar(HashType& table) {
 		if (miles < 0) {
 			cout << "Invalid mileage" << endl;
 			miles = -1;
+			cin.clear();
+			cin.ignore();
 		}
 	}
 	
@@ -241,17 +255,6 @@ void addNewCar(HashType& table) {
 
 	CarType newCar(year, miles, make, model, newColor, rand() % 999999);
 	table.InsertItem(newCar);	// Insert into Hash Table (based on ID)
+	cout << "\nCar #" << table.GetNumItems() << " added!" << endl <<
+		newCar << endl;
 }
-
-// In case you are using Visual Studio: (Otherwise, ignore this)
-// 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-// 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
